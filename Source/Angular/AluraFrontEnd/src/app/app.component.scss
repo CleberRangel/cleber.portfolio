@@ -1,0 +1,27 @@
+$input-fields-color: rgba(44, 64, 91, 255);
+
+.nav-logo {
+  width: 100px;
+  height: auto;
+}
+
+.header-color {
+  background-color: rgba(5,29,59,255);
+}
+
+.search-color {
+  background-color: $input-fields-color;
+}
+
+.descricao-projeto{
+  height: 100px;
+}
+
+input{
+  background-color: $input-fields-color;
+}
+
+.my-select{
+  background-color: $input-fields-color;
+  color: white;
+}
