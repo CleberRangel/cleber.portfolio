@@ -1,0 +1,66 @@
+:root{
+    --input-fields-color: rgba(44, 64, 91, 255);
+    --background: rgba(5,29,59,255);
+    --backgroud-hover: rgba(0, 0, 0, 0.24);
+}
+
+body {
+  background-color: var(--background);
+}
+
+.color-selector,
+.descricao-projeto-input,
+.nome-projeto-input{
+  background-color: var(--input-fields-color);
+}
+
+.color-selector:focus,
+.descricao-projeto-input:focus,
+.nome-projeto-input:focus{
+  background-color: var(--input-fields-color);
+}
+
+.header-color {
+  background-color: var(--background);
+}
+
+.search-color {
+  background-color: var(--input-fields-color);
+}
+
+
+.descricao-projeto-input{
+  resize: none;
+}
+
+.code-block-input{
+  height: 30vh;
+  width: 100%;
+  background-color: black;
+  color: white;
+  margin-top: 10px;
+  border-radius: 10px;
+  border-width: 30px;
+  border-color: lightskyblue;
+  resize: none;
+}
+
+.code-block-header{
+  position: relative;
+  top: 75px;
+  margin-top: -10px;
+  margin-left: 45px;
+  z-index: 3;
+}
+
+.my-select{
+  background-color: var(--input-fields-color);
+  color: white;
+}
+
+.user_icon:hover{
+  background-color: var(--backgroud-hover);
+  border-radius: 10px;
+}
+
+
