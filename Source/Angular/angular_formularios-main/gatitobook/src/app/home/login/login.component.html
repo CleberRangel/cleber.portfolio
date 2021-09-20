@@ -1,0 +1,46 @@
+<h4 class="text-center">Login</h4>
+
+<form class="row g-3" (ngSubmit)="login()" #loginForm="ngForm">
+  <div class="form-floating">
+    <input
+      type="email"
+      id="inputEmail"
+      class="form-control"
+      placeholder="Email Address"
+      [(ngModel)]="usuario"
+      name="usuario"
+      required
+      #campoUsuario="ngModel"
+    />
+    <label for="inputEmail">Email address</label>
+    <app-mensagem
+      *ngIf="campoUsuario.invalid && campoUsuario.touched"
+      mensagem="Usuário obrigatório"
+    ></app-mensagem>
+  </div>
+
+  <div class="form-floating">
+    <input
+      type="password"
+      id="inputPassword"
+      class="form-control"
+      placeholder="Password"
+      required=""
+      [(ngModel)]="senha"
+      name="senha"
+      #campoSenha="ngModel"
+      required
+    />
+    <label for="inputPassword">Password</label>
+    <app-mensagem
+      *ngIf="campoSenha.invalid && campoSenha.touched"
+      mensagem="Senha obrigatória"
+    ></app-mensagem>
+  </div>
+
+  <div class="d-grid">
+    <button class="btn btn-lg btn-primary" type="submit" [disabled]="loginForm.invalid">Login</button>
+  </div>
+</form>
+
+<p>Não é um usuário? <a class="link-info" [routerLink]="['novousuario']">Se Cadastre</a></p>
