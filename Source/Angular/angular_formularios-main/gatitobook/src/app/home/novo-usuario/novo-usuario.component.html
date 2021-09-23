@@ -1,6 +1,10 @@
 <h4 class="text-center">Registre-se e mostre seu pet ao mundo!</h4>
 
-<form class="row g-3" [formGroup]="novoUsuarioForm" (ngSubmit)="cadastrarNovoUsuario()">
+<form
+  class="row g-3"
+  [formGroup]="novoUsuarioForm"
+  (ngSubmit)="cadastrarNovoUsuario()"
+>
   <div class="form-floating">
     <input
       type="email"
@@ -10,6 +14,20 @@
       formControlName="email"
     />
     <label for="emailInput">Email</label>
+    <app-mensagem
+      *ngIf="
+        novoUsuarioForm.get('email')?.errors?.required &&
+        novoUsuarioForm.get('email')?.touched
+      "
+      mensagem="Email obrigatório"
+    ></app-mensagem>
+    <app-mensagem
+      *ngIf="
+        novoUsuarioForm.get('email')?.errors?.email &&
+        novoUsuarioForm.get('email')?.touched
+      "
+      mensagem="Email inválido"
+    ></app-mensagem>
   </div>
 
   <div class="form-floating">
@@ -21,6 +39,13 @@
       formControlName="fullName"
     />
     <label for="nomeInput">Nome Completo</label>
+    <app-mensagem
+      *ngIf="
+        novoUsuarioForm.get('fullName')?.errors &&
+        novoUsuarioForm.get('fullName')?.touched
+      "
+      mensagem="Nome incorreto"
+    ></app-mensagem>
   </div>
 
   <div class="form-floating">
@@ -32,6 +57,27 @@
       formControlName="userName"
     />
     <label for="usuarioInput">Usuário</label>
+    <app-mensagem
+      *ngIf="
+        novoUsuarioForm.get('userName')?.errors?.minusculo &&
+        novoUsuarioForm.get('userName')?.touched
+      "
+      mensagem="Usuário deve ser letra minúscula"
+    ></app-mensagem>
+    <app-mensagem
+      *ngIf="
+        novoUsuarioForm.get('userName')?.errors?.maxlength &&
+        novoUsuarioForm.get('userName')?.touched
+      "
+      mensagem="Usuário ter mais de 3 letras"
+    ></app-mensagem>
+    <app-mensagem
+      *ngIf="
+        novoUsuarioForm.get('userName')?.errors?.usuarioExistente &&
+        novoUsuarioForm.get('userName')?.touched
+      "
+      mensagem="Usuário já existe"
+    ></app-mensagem>
   </div>
 
   <div class="form-floating">
@@ -43,6 +89,11 @@
       formControlName="password"
     />
     <label for="senhaInput">Senha</label>
+    <app-mensagem
+    *ngIf="novoUsuarioForm.errors?.senhaIgualUsuario"
+    mensagem="Senha deve ser diferente do usuário"
+  >
+  </app-mensagem>
   </div>
 
   <button type="submit" class="btn btn-primary">Cadastrar</button>

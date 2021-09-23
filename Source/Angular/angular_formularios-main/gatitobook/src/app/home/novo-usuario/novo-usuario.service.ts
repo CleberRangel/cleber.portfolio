@@ -11,7 +11,11 @@ export class NovoUsuarioService {
   constructor(private http: HttpClient) { }
 
   cadastrarNovoUsuario(novoUsuario: NovoUsuario) : Observable<any>{
-    return this.http.post('hppt://localhost:3000/user/signup', novoUsuario);
+    return this.http.post('http://localhost:3000/user/signup', novoUsuario);
+  }
+
+  verificarUsuario(nomeUsuario: string): Observable<any>{
+    return this.http.get(`http://localhost:3000/user/exists/${nomeUsuario}`)
   }
 
 }
