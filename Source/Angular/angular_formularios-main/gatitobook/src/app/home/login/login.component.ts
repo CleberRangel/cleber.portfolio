@@ -17,7 +17,7 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {}
 
   login() {
-    this.authService.autenticate(this.usuario, this.senha).subscribe(
+    this.authService.authenticate(this.usuario, this.senha).subscribe(
       () => {
         console.log('Auth Success!');
         this.router.navigate(['animais']);
