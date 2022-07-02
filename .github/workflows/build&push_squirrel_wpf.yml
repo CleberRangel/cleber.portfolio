@@ -1,20 +1,25 @@
 name: Continous Integration / Continous Delivery with Squirrel
 
 on:
-  workflow_dispatch:
-    inputs:
-      tag:
-        description: 'Release Version'
-        required: true
-        type: string
+  push:
+    branches:
+     - release/squirrelbuild/*
+    tags:
+     - v*.*
 
 env:
-  PROJECT_PATH: Source/C#/WpfBuildWithSquirrel/MauiWithGitActions/WpfBuildWithSquirrel.csproj
-  TEST_PROJECT_PATH: Source/C#/WpfBuildWithSquirrel/MauiWithGitActions/WpfBuildWithSquirrel.Test.csproj
+  PROJECT_PATH: ./WpfBuildWithSquirrel/WpfBuildWithSquirrel.csproj
+  TEST_PROJECT_PATH: ./WpfBuildWithSquirrel.Test/WpfBuildWithSquirrel.Test.csproj
+  OUTPUT_PROJECT_PATH: ./Output
+  SQUIRREL_VERSION: 3.0.170-unstable-ge14820
+  WORKING_DIR: Source/C#/WpfBuildWithSquirrel
 
 jobs:
   CI_CD:
     runs-on: windows-latest
+    defaults:
+      run:
+       working-directory: ${{env.WORKING_DIR}}
     steps:
        - name: Checkout
          uses: actions/checkout@v3
@@ -25,22 +30,22 @@ jobs:
           dotnet-version: '6.0.x'
       
        - name: Build
-         run: dotnet publish ${{env.PROJECT_PATH}} -c Release -r win-x64 --self-contained=true /p:IncludeNativeLibrariesForSelfExtract=true /p:PublishSingleFile=true
+         run: dotnet publish ${{env.PROJECT_PATH}} -c Release -r win-x64 --output ${{env.OUTPUT_PROJECT_PATH}} --self-contained=true /p:IncludeNativeLibrariesForSelfExtract=true /p:PublishSingleFile=true
       
        - name: Test
          run: dotnet test ${{env.TEST_PROJECT_PATH}}  --no-restore --verbosity normal
 
        - name: Install Squirrel
-         run: dotnet tool install -g csq
+         run: dotnet tool install -g csq --version 3.0.170-unstable-ge14820
       
        - name: Create Install
-         run: csq pack --packId "WPFWithSquirrel" --packVersion ${{ input.tag }} --packDirectory ${{env.PROJECT_PATH}} --packAuthors "Actions with Squirrel"  --icon .\images\install.ico --splashImage .\images\install.gif
+         run: csq pack --packId "WPFWithSquirrel" --packVersion ${{ inputs.tag }} --packDirectory=${{env.OUTPUT_PROJECT_PATH}} --csq-sln=./WpfBuildWithSquirrel.sln --packAuthors="Actions with Squirrel"  --icon="./images/install.ico" --splashImage="./images/install.gif"
 
        - name: Create Release
          uses: ncipollo/release-action@v1
          with:
-           artifacts: .\Releases\**
+           artifacts: "${{env.WORKING_DIR}}/Releases/*.exe, ${{env.WORKING_DIR}}/Releases/*.nupkg,${{env.WORKING_DIR}}/Releases/RELEASES*"
            allowUpdates: true
-           tag: ${{ input.tag }}
+           tag: ${{ inputs.tag }}
            token: ${{ secrets.GITHUB_TOKEN }}
 
