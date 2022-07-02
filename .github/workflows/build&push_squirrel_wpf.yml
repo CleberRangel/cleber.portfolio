@@ -2,10 +2,11 @@ name: Continous Integration / Continous Delivery with Squirrel
 
 on:
   workflow_dispatch:
-    tag:
-      description: 'Release Version'
-      required: true
-      type: string
+    inputs:
+      tag:
+        description: 'Release Version'
+        required: true
+        type: string
 
 env:
   PROJECT_PATH: Source/C#/WpfBuildWithSquirrel/MauiWithGitActions/WpfBuildWithSquirrel.csproj
