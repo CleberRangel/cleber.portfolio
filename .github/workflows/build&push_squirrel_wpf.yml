@@ -1,0 +1,45 @@
+name: Continous Integration / Continous Delivery with Squirrel
+
+on:
+  workflow_dispatch:
+    tag:
+      description: 'Release Version'
+      required: true
+      type: string
+
+env:
+  PROJECT_PATH: Source/C#/WpfBuildWithSquirrel/MauiWithGitActions/WpfBuildWithSquirrel.csproj
+  TEST_PROJECT_PATH: Source/C#/WpfBuildWithSquirrel/MauiWithGitActions/WpfBuildWithSquirrel.Test.csproj
+
+jobs:
+  CI_CD:
+    runs-on: windows-latest
+    steps:
+       - name: Checkout
+         uses: actions/checkout@v3
+
+       - name: Install .NET Core
+         uses: actions/setup-dotnet@v2
+         with:
+          dotnet-version: '6.0.x'
+      
+       - name: Build
+         run: dotnet publish ${{env.PROJECT_PATH}} -c Release -r win-x64 --self-contained=true /p:IncludeNativeLibrariesForSelfExtract=true /p:PublishSingleFile=true
+      
+       - name: Test
+         run: dotnet test ${{env.TEST_PROJECT_PATH}}  --no-restore --verbosity normal
+
+       - name: Install Squirrel
+         run: dotnet tool install -g csq
+      
+       - name: Create Install
+         run: csq pack --packId "WPFWithSquirrel" --packVersion ${{ input.tag }} --packDirectory ${{env.PROJECT_PATH}} --packAuthors "Actions with Squirrel"  --icon .\images\install.ico --splashImage .\images\install.gif
+
+       - name: Create Release
+         uses: ncipollo/release-action@v1
+         with:
+           artifacts: .\Releases\**
+           allowUpdates: true
+           tag: ${{ input.tag }}
+           token: ${{ secrets.GITHUB_TOKEN }}
+
