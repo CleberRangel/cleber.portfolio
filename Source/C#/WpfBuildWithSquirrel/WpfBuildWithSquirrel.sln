@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32616.157
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfBuildWithSquirrel", "WpfBuildWithSquirrel\WpfBuildWithSquirrel.csproj", "{4CA16772-77B1-4AEE-998C-5A9781E75B27}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfBuildWithSquirrel.Test", "WpfBuildWithSquirrel.Test\WpfBuildWithSquirrel.Test.csproj", "{C3D7D280-3289-470E-B289-701724C25832}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4CA16772-77B1-4AEE-998C-5A9781E75B27}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4CA16772-77B1-4AEE-998C-5A9781E75B27}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4CA16772-77B1-4AEE-998C-5A9781E75B27}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4CA16772-77B1-4AEE-998C-5A9781E75B27}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C3D7D280-3289-470E-B289-701724C25832}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3D7D280-3289-470E-B289-701724C25832}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3D7D280-3289-470E-B289-701724C25832}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3D7D280-3289-470E-B289-701724C25832}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5750BAE8-2209-48B1-9E3D-4D6A23221E3F}
+	EndGlobalSection
+EndGlobal
