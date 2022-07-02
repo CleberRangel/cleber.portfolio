@@ -11,15 +11,15 @@ namespace WpfBuildWithSquirrel
 {
     public sealed class MainViewModel : ObservableRecipient
     {
-        private string _GitHubUpdateSite;
-        private bool _NewVersionAvailable;
-        private string? _ApplicationVersion;
-        private string? _NewApplicationVersion;
+        private string _gitHubUpdateSite;
+        private bool _newVersionAvailable;
+        private string? _applicationVersion;
+        private string? _newApplicationVersion;
 
         public MainViewModel(string gitHubRepo)
         {
-            _ApplicationVersion = $"{Assembly.GetExecutingAssembly().GetName().Version}";
-            _GitHubUpdateSite = gitHubRepo;
+            _applicationVersion = $"{Assembly.GetExecutingAssembly().GetName().Version}";
+            _gitHubUpdateSite = gitHubRepo;
 
             UpdateApplicationCommand = new AsyncRelayCommand(UpdateApplication);
             CheckUpdateCommand = new RelayCommand(CheckUpdate);
@@ -29,36 +29,39 @@ namespace WpfBuildWithSquirrel
         {
             try
             {
-                using (var updateManager = new GithubUpdateManager(_GitHubUpdateSite))
+                using (var updateManager = new GithubUpdateManager(_gitHubUpdateSite))
                 {
-                    if (updateManager.IsInstalledApp is false)
+                    if (updateManager.IsInstalledApp is true)
                     {
-                        NewApplicationVersion = "No new version found!";
-                        return;
-                    }
+                        var updateInfo = await updateManager.CheckForUpdate();
 
-                    var updateInfo = await updateManager.CheckForUpdate();
-
-                    if (updateInfo is not null)
-                    {
-                        NewVersionAvailable = true;
-                        NewApplicationVersion = $"{updateInfo.FutureReleaseEntry.Version}";
-                        return;
+                        if (updateInfo is not null)
+                        {
+                            if (updateInfo.CurrentlyInstalledVersion != updateInfo.FutureReleaseEntry)
+                            {
+                                NewVersionAvailable = true;
+                                NewApplicationVersion = $"{updateInfo.FutureReleaseEntry.Version}";
+                                return;
+                            }
+                        }
                     }
                 }
 
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show(ex.Message, "ERROR!");
 
             }
+
+            NewApplicationVersion = "No new version found!";
             NewVersionAvailable = false;
+            return;
         }
 
         private async Task UpdateApplication()
         {
-            using (var updateManager = new GithubUpdateManager(_GitHubUpdateSite))
+            using (var updateManager = new GithubUpdateManager(_gitHubUpdateSite))
             {
                 await updateManager.UpdateApp();
 
@@ -70,19 +73,19 @@ namespace WpfBuildWithSquirrel
         public ICommand CheckUpdateCommand { get; }
         public bool NewVersionAvailable
         {
-            get => _NewVersionAvailable;
-            set => SetProperty(ref _NewVersionAvailable, value);
+            get => _newVersionAvailable;
+            set => SetProperty(ref _newVersionAvailable, value);
         }
         public string? ApplicationVersion
         {
-            get => _ApplicationVersion;
-            set => SetProperty(ref _ApplicationVersion, value);
+            get => _applicationVersion;
+            set => SetProperty(ref _applicationVersion, value);
         }
 
-        public string? NewApplicationVersion 
-        { 
-            get => _NewApplicationVersion; 
-            set => SetProperty(ref _NewApplicationVersion, value); 
+        public string? NewApplicationVersion
+        {
+            get => _newApplicationVersion;
+            set => SetProperty(ref _newApplicationVersion, value);
         }
     }
 }
