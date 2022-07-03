@@ -60,19 +60,19 @@ namespace WpfBuildWithSquirrel
             return;
         }
 
-        private void ProgressAction(int value)
-        {
-            ProgressBarValue = value;
-        }
-
         private async Task UpdateApplication()
         {
             using (var updateManager = new GithubUpdateManager(_gitHubUpdateSite))
             {
-                await updateManager.UpdateApp();
+                await updateManager.UpdateApp(ProgressAction);
 
                 UpdateManager.RestartApp();
             }
+        }
+
+        private void ProgressAction(int value)
+        {
+            ProgressBarValue = value;
         }
 
         public ICommand UpdateApplicationCommand { get; }
