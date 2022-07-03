@@ -62,7 +62,7 @@ namespace WpfBuildWithSquirrel
 
         private void ProgressAction(int value)
         {
-            throw new NotImplementedException();
+            ProgressBarValue = value;
         }
 
         private async Task UpdateApplication()
