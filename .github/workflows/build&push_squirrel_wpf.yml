@@ -3,9 +3,7 @@ name: Continous Integration / Continous Delivery with Squirrel
 on:
   push:
     branches:
-     - release/squirrelbuild/*
-    tags:
-     - v*.*
+     - release/squirrelbuild/*.*
 
 env:
   PROJECT_PATH: ./WpfBuildWithSquirrel/WpfBuildWithSquirrel.csproj
@@ -37,15 +35,23 @@ jobs:
 
        - name: Install Squirrel
          run: dotnet tool install -g csq --version 3.0.170-unstable-ge14820
+         
+       - name: Split version code
+         uses: xom9ikk/split@v1
+         id: split
+         with:
+          string: ${{ github.ref_name }}
+          separator: /
+          limit: -1
       
        - name: Create Install
-         run: csq pack --packId "WPFWithSquirrel" --packVersion ${{ github.ref_name }} --packDirectory=${{env.OUTPUT_PROJECT_PATH}} --csq-sln=./WpfBuildWithSquirrel.sln --packAuthors="Actions with Squirrel"  --icon="./images/install.ico" --splashImage="./images/install.gif"
+         run: csq pack --packId "WPFWithSquirrel" --packVersion ${{ steps.split.outputs._1 }} --packDirectory=${{env.OUTPUT_PROJECT_PATH}} --csq-sln=./WpfBuildWithSquirrel.sln --packAuthors="Actions with Squirrel"  --icon="./images/install.ico" --splashImage="./images/install.gif"
 
        - name: Create Release
          uses: ncipollo/release-action@v1
          with:
            artifacts: "${{env.WORKING_DIR}}/Releases/*.exe, ${{env.WORKING_DIR}}/Releases/*.nupkg,${{env.WORKING_DIR}}/Releases/RELEASES*"
            allowUpdates: true
-           tag: ${{ github.ref_name }}
+           tag: ${{ steps.split.outputs._1 }}
            token: ${{ secrets.GITHUB_TOKEN }}
 
