@@ -52,6 +52,6 @@ jobs:
          with:
            artifacts: "${{env.WORKING_DIR}}/Releases/*.exe, ${{env.WORKING_DIR}}/Releases/*.nupkg,${{env.WORKING_DIR}}/Releases/RELEASES*"
            allowUpdates: true
-           tag: ${{ steps.split.outputs._1 }}
+           tag: ${{ github.ref_name }}
            token: ${{ secrets.GITHUB_TOKEN }}
 
