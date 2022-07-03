@@ -15,6 +15,7 @@ namespace WpfBuildWithSquirrel
         private bool _newVersionAvailable;
         private string? _applicationVersion;
         private string? _newApplicationVersion;
+        private int _progressBarValue;
 
         public MainViewModel(string gitHubRepo)
         {
@@ -33,7 +34,7 @@ namespace WpfBuildWithSquirrel
                 {
                     if (updateManager.IsInstalledApp is true)
                     {
-                        var updateInfo = await updateManager.CheckForUpdate();
+                        var updateInfo = await updateManager.CheckForUpdate(false, ProgressAction);
 
                         if (updateInfo is not null)
                         {
@@ -59,6 +60,11 @@ namespace WpfBuildWithSquirrel
             return;
         }
 
+        private void ProgressAction(int value)
+        {
+            throw new NotImplementedException();
+        }
+
         private async Task UpdateApplication()
         {
             using (var updateManager = new GithubUpdateManager(_gitHubUpdateSite))
@@ -81,11 +87,15 @@ namespace WpfBuildWithSquirrel
             get => _applicationVersion;
             set => SetProperty(ref _applicationVersion, value);
         }
-
         public string? NewApplicationVersion
         {
             get => _newApplicationVersion;
             set => SetProperty(ref _newApplicationVersion, value);
+        }
+        public int ProgressBarValue
+        {
+            get => _progressBarValue;
+            set => SetProperty(ref _progressBarValue, value);
         }
     }
 }

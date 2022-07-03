@@ -8,29 +8,38 @@
         d:DataContext="{d:DesignInstance local:MainViewModel}"
         Title="AutoUpdate Squirrel" Width="300" Height="200">
 
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
+    <DockPanel>
 
-        <TextBlock Grid.Column="0" Grid.Row="0" Text="App Version"/>
-        <TextBlock Grid.Column="1" Grid.Row="0"  Text="{Binding ApplicationVersion}"/>
+        <StatusBar DockPanel.Dock="Bottom">
+            <StatusBarItem HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch">
+                <ProgressBar Maximum="100" Height="5" Value="{Binding ProgressBarValue}"/>
+            </StatusBarItem>
+        </StatusBar>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Column="0" Grid.Row="0" Text="App Version"/>
+            <TextBlock Grid.Column="1" Grid.Row="0"  Text="{Binding ApplicationVersion}"/>
 
 
-        <TextBlock Grid.Column="0" Grid.Row="1" Text="New Version"/>
-        <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding NewApplicationVersion}"/>
+            <TextBlock Grid.Column="0" Grid.Row="1" Text="New Version"/>
+            <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding NewApplicationVersion}"/>
 
-        <Button Grid.ColumnSpan="2" Grid.Row="2" Content="Check Update" Command="{Binding CheckUpdateCommand}"/>
+            <Button Grid.ColumnSpan="2" Grid.Row="2" Content="Check Update" Command="{Binding CheckUpdateCommand}"/>
 
-        <Button Grid.ColumnSpan="2" Grid.Row="3" Content="Update App" Command="{Binding UpdateApplicationCommand}" IsEnabled="{Binding NewVersionAvailable}"/>
+            <Button Grid.ColumnSpan="2" Grid.Row="3" Content="Update App" Command="{Binding UpdateApplicationCommand}" IsEnabled="{Binding NewVersionAvailable}"/>
 
-    </Grid>
+        </Grid>
 
+    </DockPanel>
 </Window>
